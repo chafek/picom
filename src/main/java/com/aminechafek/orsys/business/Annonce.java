@@ -7,14 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import lombok.Data;
+import lombok.Setter;
 
 @Entity
-@Data
+@getter
+@Setter
 public class Annonce {
 	
 	@Id
@@ -43,12 +47,34 @@ public class Annonce {
 	@Positive
 	private double montantRegleEnEuros;
 	
-	
+	@ManyToOne
 	private Client client;
 	
+	@ManyToOne
 	private Diffusion diffusion;
 	
+	@OneToMany(mappedBy = "annonce")
 	private List<TrancheHoraire> trancheHoraires;
 	
+	@ManyToMany
 	private List<Zone>zones;
+	
+	public Annonce() {
+		this.dateHeureCreation=LocalDateTime.now();
+	}
+
+	public Annonce(LocalDateTime dateHeureDebut, LocalDateTime dateHeureFin, String contenu, String numeroCarte,int anneeExpiration,byte moisExpiration,String cryptogramme, double montantRegleEnEuros, Client client) {
+		super();
+		this.dateHeureDebut = dateHeureDebut;
+		this.dateHeureFin = dateHeureFin;
+		this.contenu = contenu;
+		this.numeroCarte = numeroCarte;
+		this.anneeExpiration = anneeExpiration;
+		this.moisExpiration = moisExpiration;
+		this.cryptogramme = cryptogramme;
+		this.montantRegleEnEuros = montantRegleEnEuros;
+		this.client = client;
+	}
+	
+	
 }
